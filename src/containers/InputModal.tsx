@@ -5,6 +5,7 @@ import { X } from "react-feather";
 import { useFeedStore } from "../contexts/FeedStoreContext";
 import { useModalState } from "../contexts/ModalStateContext";
 import { feedItem } from "../types";
+import { getParsedFeed } from "../utils/hooks";
 
 interface InputModalProps {}
 
@@ -18,18 +19,15 @@ export const InputModal: React.FC<InputModalProps> = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    const res = await axios.post(
-      `http://localhost:5000/index?url=${inputValue}`
-    );
-    console.log(res);
-    if (res.data?.error === "Invalid URL") {
+    const data = await getParsedFeed(inputValue);
+    if (data?.error === "Invalid URL") {
       setError(true);
       return;
     } else {
       setError(false);
       dispatch({ type: "addPublishersUrl", payload: inputValue });
-      const publication = res?.data?.feed?.title;
-      const feedItems = res?.data?.entries.map((i: feedItem) => ({
+      const publication = data?.feed?.title;
+      const feedItems = data?.entries.map((i: feedItem) => ({
         ...i,
         publication,
       }));

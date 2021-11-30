@@ -8,6 +8,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ searchNotes }) => {
   return (
     <input
       type="search"
+      className="search-bar"
       onChange={(event) => {
         event.preventDefault();
         searchNotes(event.target.value);

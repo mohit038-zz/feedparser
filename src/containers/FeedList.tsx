@@ -1,11 +1,14 @@
 import axios from "axios";
 import React, { useEffect } from "react";
+import { RefreshCcw } from "react-feather";
 import { ArticleCard } from "../components/FeedList/ArticleCard";
 import { SearchBar } from "../components/FeedList/SearchBar";
 import { useFeedStore } from "../contexts/FeedStoreContext";
 import { data } from "../data";
 import { feedItem } from "../types";
+import { iconColor } from "../utils/constants";
 import { Folder } from "../utils/emuns";
+import { getParsedFeed, useInterval } from "../utils/hooks";
 
 interface RssFeedProps {}
 
@@ -23,6 +26,21 @@ function containsSearchTerm(keyword: string) {
 const RssFeed: React.FC<RssFeedProps> = ({}) => {
   const { state, dispatch } = useFeedStore();
   const [feed, setFeed] = React.useState(state.feedItems);
+
+  const refreshFeed = async () => {
+    const data = await getParsedFeed(state.publishersUrl[0]);
+    if (data?.error !== "Invalid URL") {
+      const publication = data?.feed?.title;
+      const feedItems = data?.entries.map((i: feedItem) => ({
+        ...i,
+        publication,
+      }));
+      setFeed(feedItems);
+    }
+    console.log("refreshed");
+  };
+
+  useInterval(refreshFeed, 10000);
 
   useEffect(() => {
     if (state.activeFolder === Folder.UNREAD) {
@@ -45,6 +63,9 @@ const RssFeed: React.FC<RssFeedProps> = ({}) => {
     <div className="feedList">
       <div className="feedList-header">
         <SearchBar searchNotes={onFilterChange} />
+        <button className="refresh">
+          <RefreshCcw size={18} onClick={refreshFeed} color={iconColor} />
+        </button>
       </div>
       <div className="feedList-list">
         {feed.length > 0 ? (

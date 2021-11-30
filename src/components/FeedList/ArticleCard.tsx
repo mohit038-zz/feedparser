@@ -35,7 +35,14 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
         />
         <div className="article">
           <div className="article-title">
-            <div>{title}</div>
+            <a
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => dispatch({ type: "addToRead", payload: id })}
+            >
+              {title}
+            </a>
           </div>
           <div className="article-summary">
             <p>{summary}</p>

@@ -15,6 +15,22 @@
     box-sizing: border-box;
     border-bottom: 1px solid darken($note-sidebar-color, 10%);
 
+    .refresh {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-left: auto;
+      margin-right: 0.8rem;
+      cursor: pointer;
+      background: transparent;
+      border-color: transparent;
+      color: $app-sidebar-color;
+    }
+    .search-bar {
+      font-weight: 700;
+      margin-left: auto;
+      cursor: pointer;
+    }
+
     input {
       -webkit-appearance: none;
       margin: 0;
@@ -61,6 +77,10 @@
       height: 100%;
       box-sizing: border-box;
       overflow: hidden;
+
+      a {
+        text-decoration: none;
+      }
 
       .article {
         display: flex;
