@@ -18,6 +18,9 @@ Install Flask to run the feedparser
 
 Install feedparser
 
+### Open a new terminal window and run `cd ./server && python3 parser.py`
+Runs the flask server
+
 ### `yarn start`
 
 Runs the app in the development mode.\
