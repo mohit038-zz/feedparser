@@ -1,0 +1,7 @@
+export enum Folder {
+  ALL = "ALL",
+  UNREAD = "UNREAD",
+  CATEGORY = "CATEGORY",
+  PUBLISHER = "PUBLISHER",
+  FAVORITES = "FAVORITES",
+}

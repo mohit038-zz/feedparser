@@ -1,0 +1,117 @@
+.dimmer {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background: $dimmer-background;
+  line-height: 1;
+  user-select: none;
+  z-index: 99;
+}
+
+.input-modal {
+  position: relative;
+  border-radius: 0.3rem;
+  background: white;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.07), 0 5px 5px rgba(0, 0, 0, 0.2);
+  text-align: left;
+  width: 650px;
+  max-width: 90%;
+  user-select: text;
+  z-index: 100;
+
+  h3 {
+    margin: 0;
+  }
+
+  .input-modal-header {
+    position: relative;
+    padding: 1rem 2rem 0.5rem;
+    border-bottom: 1px solid $note-sidebar-color;
+  }
+
+  .modal {
+    &-content {
+      padding: 0 2rem 2rem 2rem;
+      height: 385px;
+      max-height: calc(80vh - 10rem);
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      &-input {
+        width: 60%;
+        padding: 0.5rem;
+        font-size: 1rem;
+        font-family: inherit;
+        background: none;
+        resize: none;
+        color: inherit;
+        border-radius: 0.3rem;
+        &::placeholder {
+          color: rgba(0, 0, 0, 0.5);
+        }
+        &.error {
+          border: 1px solid lighten($error, 40%);
+          box-shadow: 0 0 0.2rem lighten($error, 15%);
+        }
+      }
+      .error-message {
+        padding-top: 00.3rem;
+        color: $error;
+        font-size: 1rem;
+        font-weight: 700;
+      }
+
+      select {
+        font-size: 1rem;
+        padding: 0.25rem 0.5rem;
+        margin: 0;
+        height: 30px;
+        max-width: 130px;
+        border-radius: 0.3rem;
+        -webkit-appearance: none;
+
+        &:active &:focus {
+          border: 1px solid lighten($primary, 15%);
+          box-shadow: 0 0 0.2rem lighten($primary, 15%);
+        }
+      }
+    }
+  }
+
+  .close-button {
+    cursor: pointer;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    margin: 0;
+    border-radius: 0.3rem;
+    padding: 0.5rem;
+
+    &:hover,
+    &:active {
+      background: darken($light-theme-background, 3%);
+    }
+  }
+
+  .subtitle {
+    color: lighten($font-color, 15%);
+    margin-bottom: 0.75rem;
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.5rem 2rem;
+    border-top: 1px solid $note-sidebar-color;
+  }
+}
