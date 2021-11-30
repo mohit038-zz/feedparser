@@ -42,7 +42,6 @@ const AppSidebar: React.FC<AppSidebarProps> = () => {
           swapFolder={swapFolder}
           folder={Folder.FAVORITES}
         />
-        {/* <CategoryList /> */}
       </section>
     </aside>
   );

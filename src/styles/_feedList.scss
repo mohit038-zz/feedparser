@@ -12,7 +12,6 @@
     background: $app-sidebar-color;
     height: 60px;
     padding: 0 0.5rem;
-    box-sizing: border-box;
     border-bottom: 1px solid darken($note-sidebar-color, 10%);
 
     .refresh {
@@ -23,21 +22,49 @@
       cursor: pointer;
       background: transparent;
       border-color: transparent;
+      &:active svg {
+        transform: scale(1.1);
+      }
       color: $app-sidebar-color;
-    }
-    .search-bar {
-      font-weight: 700;
-      margin-left: auto;
-      cursor: pointer;
     }
 
     input {
       -webkit-appearance: none;
       margin: 0;
+      color: $light-font-color;
       min-width: 0;
       width: 40%;
       padding: 0.5rem;
+      box-sizing: border-box;
       border-radius: 0.3rem;
+      &:active &:focus {
+        border: 1px solid lighten($dark-sidebar, 15%);
+        box-shadow: 0 0 0.2rem lighten($dark-sidebar, 15%);
+      }
+    }
+    .search-bar {
+      font-weight: 700;
+      background-color: darken($note-sidebar-color, 5%);
+      border-color: transparent;
+      margin-left: auto;
+      cursor: pointer;
+      background: lighten($dark-sidebar, 5%);
+      color: $light-font-color;
+      border: 1px solid darken($dark-sidebar, 10%);
+      &:active {
+        background: darken($dark-sidebar, 5%);
+        color: $light-font-color;
+        border: 1px solid lighten($dark-sidebar, 15%);
+      }
+      &:hover {
+        background: darken($dark-sidebar, 5%);
+        color: $light-font-color;
+        border: 1px solid lighten($dark-sidebar, 15%);
+      }
+      &:focus {
+        border: 1px solid lighten($dark-sidebar, 15%);
+        box-shadow: 0 0 0.2rem lighten($dark-sidebar, 15%);
+      }
     }
   }
 
@@ -99,17 +126,20 @@
           font-size: 1.2rem;
           font-weight: 700;
           color: $font-color;
+          width: 100%;
         }
 
         .article-summary {
           font-size: 0.9rem;
           color: $font-color;
           flex: 1 1 0;
+          width: 100%;
         }
         .article-publisher {
           margin-top: "auto";
           font-size: 0.8rem;
           color: $font-color;
+          width: 100%;
         }
       }
       .thumbnail {
@@ -118,6 +148,7 @@
         margin: 0.3rem;
         box-sizing: border-box;
         height: 185px;
+
         border-radius: 0.3rem;
       }
     }

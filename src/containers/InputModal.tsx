@@ -20,6 +20,7 @@ export const InputModal: React.FC<InputModalProps> = () => {
   ) => {
     e.preventDefault();
     const data = await getParsedFeed(inputValue);
+    console.log(data);
     if (data?.error === "Invalid URL") {
       setError(true);
       return;

@@ -3,7 +3,7 @@
   color: $light-font-color;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid darken($app-sidebar-color, 10%);
+  border-right: 1px solid darken($dark-sidebar, 8%);
   z-index: 3;
 
   &-settings {
@@ -159,6 +159,12 @@
     text-align: left;
     font-size: 0.95rem;
     border-radius: 0;
+
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border: none !important;
 
     svg {
       margin-right: 0.75rem;

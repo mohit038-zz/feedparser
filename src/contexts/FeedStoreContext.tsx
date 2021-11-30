@@ -1,6 +1,7 @@
 import React, { createContext, Dispatch, useReducer } from "react";
 import { feedItem } from "../types";
 import { Folder } from "../utils/emuns";
+import { useInterval } from "../utils/hooks";
 
 interface FeedProviderProps {
   children: React.ReactNode;
@@ -31,7 +32,7 @@ interface FeedStoreContextInterface {
   dispatch: Dispatch<FeedStoreAction>;
 }
 
-const initialState = {
+let initialState = {
   state: {
     read: [],
     favourites: [],
@@ -43,6 +44,12 @@ const initialState = {
   },
   dispatch: (action: FeedStoreAction) => {},
 };
+
+const state = localStorage.getItem("feedStoreState");
+
+if (state) {
+  initialState.state = JSON.parse(state);
+}
 
 const FeedStoreContext = createContext<FeedStoreContextInterface>(initialState);
 
@@ -120,6 +127,10 @@ const feedStoreReducer = (
 
 export const useFeedStore = () => {
   const context = React.useContext(FeedStoreContext);
+  const set = () =>
+    localStorage.setItem("feedStoreState", JSON.stringify(context.state));
+  useInterval(set, 10000);
+
   if (context === undefined) {
     throw new Error("useFeedStore must be used within a FeedStoreProvider");
   }

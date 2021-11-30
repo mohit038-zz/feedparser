@@ -39,7 +39,11 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
               href={link}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => dispatch({ type: "addToRead", payload: id })}
+              onClick={() => {
+                if (!read.includes(id)) {
+                  dispatch({ type: "addToRead", payload: id });
+                }
+              }}
             >
               {title}
             </a>
