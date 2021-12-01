@@ -1,5 +1,5 @@
 from feedparser import parse
-from flask import Flask, json, render_template, request, jsonify
+from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 @app.route('/index', methods=['GET', 'POST'])

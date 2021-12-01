@@ -25,7 +25,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "server": "cd ./server && python3 parser.py",
+    "start-api": "cd api && venv/bin/flask run --no-debugger",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
