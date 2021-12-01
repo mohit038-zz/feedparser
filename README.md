@@ -8,21 +8,13 @@
 
 ## Available Scripts
 
-In the project directory, run:
+- Run `yarn install` to install all dependencies.
+- If you are using a mac, run `cd api && python3 -m venv venv && source venv/bin/activate && pip install flask python-dotenv feedparser && cd ../ && yarn start-api`
+- If you are on windows, run `cd api && python -m venv venv && venv\Scripts\activate && pip install flask python-dotenv feedparser && cd ../ && yarn start-api`
+- Open a terminal window and run `yarn install`
 
-### `pip3 install Flask`
-
-Install Flask to run the feedparser
-
-### `pip3 install feedparser`
-
-Install feedparser
-
-### Open a new terminal window and run `cd ./server && python3 parser.py`
-Runs the flask server
 
 ### `yarn start`
-
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
