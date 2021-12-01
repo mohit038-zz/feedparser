@@ -11,7 +11,7 @@
 - Run `yarn install` to install all dependencies.
 - If you are using a mac, run `cd api && python3 -m venv venv && source venv/bin/activate && pip install flask python-dotenv feedparser && cd ../ && yarn start-api`
 - If you are on windows, run `cd api && python -m venv venv && venv\Scripts\activate && pip install flask python-dotenv feedparser && cd ../ && yarn start-api`
-- Open a terminal window and run `yarn install`
+- Open a terminal window and run `yarn start`
 
 
 ### `yarn start`
