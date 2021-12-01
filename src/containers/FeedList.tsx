@@ -1,10 +1,8 @@
-import axios from "axios";
 import React, { useEffect } from "react";
 import { RefreshCcw } from "react-feather";
 import { ArticleCard } from "../components/FeedList/ArticleCard";
 import { SearchBar } from "../components/FeedList/SearchBar";
 import { useFeedStore } from "../contexts/FeedStoreContext";
-import { data } from "../data";
 import { feedItem } from "../types";
 import { iconColor } from "../utils/constants";
 import { Folder } from "../utils/emuns";
@@ -23,21 +21,23 @@ function containsSearchTerm(keyword: string) {
   };
 }
 
-const RssFeed: React.FC<RssFeedProps> = ({}) => {
-  const { state, dispatch } = useFeedStore();
+const RssFeed: React.FC<RssFeedProps> = () => {
+  const { state } = useFeedStore();
   const [feed, setFeed] = React.useState(state.feedItems);
 
   const refreshFeed = async () => {
-    const data = await getParsedFeed(state.publishersUrl[0]);
-    if (data?.error !== "Invalid URL") {
+    let res: Array<feedItem> = [];
+    for (const url of state.publishersUrl) {
+      const data = await getParsedFeed(url);
+      if (data?.error === "Invalid URL") break;
       const publication = data?.feed?.title;
       const feedItems = data?.entries.map((i: feedItem) => ({
         ...i,
         publication,
       }));
-      setFeed(feedItems);
+      res.push(...feedItems);
     }
-    console.log("refreshed");
+    setFeed(res);
   };
 
   useInterval(refreshFeed, 10000);
@@ -49,11 +49,29 @@ const RssFeed: React.FC<RssFeedProps> = ({}) => {
       setFeed(
         state.feedItems.filter((item) => state.favourites.includes(item.id))
       );
+    } else if (state.activeFolder === Folder.PUBLISHER) {
+      state.feedItems.filter((item) => item.rssUrl === state.activePublisher);
+    } else if (state.activeFolder === Folder.CATEGORY) {
+      setFeed(
+        state.feedItems.filter((item) =>
+          item.tags?.includes({
+            term: state.activeCategory as string,
+          })
+        )
+      );
     } else {
       setFeed(state.feedItems);
     }
-    console.log(data);
-  }, [state.activeFolder, state.favourites, state.feedItems, state.read]);
+  }, [
+    state.activeCategory,
+    state.activeFolder,
+    state.activePublisher,
+    state.favourites,
+    state.feedItems,
+    state.read,
+  ]);
+
+  useEffect(() => {});
 
   const onFilterChange = (keyword: string): void => {
     setFeed(state.feedItems.filter(containsSearchTerm(keyword)));

@@ -12,7 +12,8 @@ interface InputModalProps {}
 export const InputModal: React.FC<InputModalProps> = () => {
   const { isModalOpen, setIsModalOpen } = useModalState();
   const [inputValue, setInputValue] = React.useState("");
-  const [error, setError] = React.useState(false);
+
+  const [error, setError] = React.useState<String | null>("");
   const { dispatch } = useFeedStore();
 
   const handleSubmit = async (
@@ -20,17 +21,19 @@ export const InputModal: React.FC<InputModalProps> = () => {
   ) => {
     e.preventDefault();
     const data = await getParsedFeed(inputValue);
-    console.log(data);
+    console.log("data", data);
     if (data?.error === "Invalid URL") {
-      setError(true);
+      setError(data?.error);
       return;
     } else {
-      setError(false);
+      setError(null);
       dispatch({ type: "addPublishersUrl", payload: inputValue });
       const publication = data?.feed?.title;
+      const rssUrl = inputValue;
       const feedItems = data?.entries.map((i: feedItem) => ({
         ...i,
         publication,
+        rssUrl,
       }));
       dispatch({ type: "addFeedItem", payload: feedItems });
       setInputValue("");
@@ -63,9 +66,7 @@ export const InputModal: React.FC<InputModalProps> = () => {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
           />
-          {error && (
-            <div className="error-message">Invalid Input, Try Again</div>
-          )}
+          {error && <div className="error-message">{error}</div>}
         </section>
         <footer className="modal-footer">
           <button
@@ -80,7 +81,7 @@ export const InputModal: React.FC<InputModalProps> = () => {
             className="button"
             onClick={() => {
               setInputValue("");
-              setError(false);
+              setError(null);
               setIsModalOpen(false);
             }}
           >

@@ -1,9 +1,8 @@
 import moment from "moment";
-import React, { useEffect } from "react";
-import { Eye, EyeOff, Heart, Star } from "react-feather";
+import React from "react";
+import { Eye, EyeOff, Star } from "react-feather";
 import { useFeedStore } from "../../contexts/FeedStoreContext";
 import { feedItem } from "../../types";
-import { iconColor } from "../../utils/constants";
 
 interface ArticleCardProps {
   feedItem: feedItem;
@@ -12,16 +11,7 @@ interface ArticleCardProps {
 export const ArticleCard: React.FC<ArticleCardProps> = ({
   feedItem,
 }: ArticleCardProps) => {
-  const {
-    title,
-    link,
-    id,
-    media_thumbnail,
-    publication,
-    summary,
-    author,
-    published,
-  } = feedItem;
+  const { title, link, id, publication, summary, author, published } = feedItem;
   const { state, dispatch } = useFeedStore();
   const { favourites, read } = state;
   const ago = moment(published).fromNow();
@@ -30,7 +20,11 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
       <div className="article-card-content">
         <img
           className="thumbnail"
-          src={media_thumbnail[0]?.url}
+          src={
+            feedItem.media_thumbnail
+              ? feedItem.media_thumbnail[0].url
+              : "../../assets/logo.svg"
+          }
           alt="article"
         />
         <div className="article">

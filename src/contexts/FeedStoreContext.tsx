@@ -1,7 +1,6 @@
 import React, { createContext, Dispatch, useReducer } from "react";
 import { feedItem } from "../types";
-import { Folder } from "../utils/emuns";
-import { useInterval } from "../utils/hooks";
+import { Category, Folder } from "../utils/emuns";
 
 interface FeedProviderProps {
   children: React.ReactNode;
@@ -9,22 +8,22 @@ interface FeedProviderProps {
 
 export type FeedStoreAction =
   | { type: "addFavourites"; payload: String }
-  | { type: "setActivePublisher"; payload: String }
+  | { type: "setActivePublisher"; payload: String | null }
   | { type: "setActiveFolder"; payload: Folder }
-  | { type: "setActiveCategory"; payload: string }
+  | { type: "setActiveCategory"; payload: Category | null }
   | { type: "addToRead"; payload: String }
-  | { type: "addPublishersUrl"; payload: string }
+  | { type: "addPublishersUrl"; payload: String }
   | { type: "addFeedItem"; payload: Array<feedItem> }
-  | { type: "removePublishersUrl"; payload: string };
+  | { type: "removePublisher"; payload: String };
 
 interface FeedStoreState {
   read: String[];
   favourites: String[];
   feedItems: feedItem[];
   publishersUrl: String[];
-  activePublisher: String;
+  activePublisher: String | null;
   activeFolder: Folder;
-  activeCategory: String;
+  activeCategory: Category | null;
 }
 
 interface FeedStoreContextInterface {
@@ -39,7 +38,7 @@ let initialState = {
     feedItems: [],
     publishersUrl: [],
     activePublisher: "",
-    activeCategory: "",
+    activeCategory: null,
     activeFolder: Folder.ALL,
   },
   dispatch: (action: FeedStoreAction) => {},
@@ -80,13 +79,14 @@ const feedStoreReducer = (
         activePublisher: action.payload,
       };
 
-    case "removePublishersUrl":
+    case "removePublisher":
       if (state.publishersUrl.includes(action.payload)) {
         return {
           ...state,
           publishersUrl: state.publishersUrl.filter(
             (i) => i !== action.payload
           ),
+          feedItems: state.feedItems.filter((i) => i.rssUrl !== action.payload),
         };
       }
       return state;
@@ -127,10 +127,6 @@ const feedStoreReducer = (
 
 export const useFeedStore = () => {
   const context = React.useContext(FeedStoreContext);
-  const set = () =>
-    localStorage.setItem("feedStoreState", JSON.stringify(context.state));
-  useInterval(set, 10000);
-
   if (context === undefined) {
     throw new Error("useFeedStore must be used within a FeedStoreProvider");
   }
