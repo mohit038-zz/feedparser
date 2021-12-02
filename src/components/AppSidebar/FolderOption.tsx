@@ -1,5 +1,5 @@
 import React from "react";
-import { Book, Eye, EyeOff, Star } from "react-feather";
+import { Book, EyeOff, Star } from "react-feather";
 import { iconColor } from "../../utils/constants";
 import { Folder } from "../../utils/emuns";
 

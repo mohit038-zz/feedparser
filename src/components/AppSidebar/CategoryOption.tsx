@@ -3,7 +3,6 @@ import {
   Briefcase,
   CloudRain,
   Coffee,
-  Compass,
   EyeOff,
   Facebook,
   MapPin,

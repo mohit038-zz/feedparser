@@ -30,9 +30,11 @@ const RssFeed: React.FC<RssFeedProps> = () => {
       const data = await getParsedFeed(url);
       if (data?.error === "Invalid URL") break;
       const publication = data?.feed?.title;
+      const rssUrl = url;
       const feedItems = data?.entries.map((i: feedItem) => ({
         ...i,
         publication,
+        rssUrl,
       }));
       res.push(...feedItems);
     }
@@ -49,7 +51,6 @@ const RssFeed: React.FC<RssFeedProps> = () => {
           (item) => !state.read.includes(item.id)
         ),
       });
-      console.log("unredt");
     } else if (state.activeFolder === Folder.FAVORITES) {
       dispatch({
         type: "addFeedListItems",
@@ -57,7 +58,6 @@ const RssFeed: React.FC<RssFeedProps> = () => {
           state.favourites.includes(item.id)
         ),
       });
-      console.log("fav");
     } else if (state.activeFolder === Folder.PUBLISHER) {
       dispatch({
         type: "addFeedListItems",
@@ -65,7 +65,6 @@ const RssFeed: React.FC<RssFeedProps> = () => {
           (item) => item.rssUrl === state.activePublisher
         ),
       });
-      console.log("pub");
     } else if (state.activeFolder === Folder.CATEGORY) {
       dispatch({
         type: "addFeedListItems",
@@ -75,14 +74,9 @@ const RssFeed: React.FC<RssFeedProps> = () => {
           })
         ),
       });
-      console.log("cat");
     } else {
       dispatch({ type: "addFeedListItems", payload: state.feedItems });
-      console.log("ALL");
     }
-    console.log("useEffect run");
-    console.log(state.activeFolder);
-    console.log(state.activeFolder === Folder.FAVORITES);
   }, [
     dispatch,
     state.activeCategory,
@@ -96,7 +90,10 @@ const RssFeed: React.FC<RssFeedProps> = () => {
   const onFilterChange = (keyword: string): void => {
     dispatch({
       type: "addFeedListItems",
-      payload: state.feedItems.filter(containsSearchTerm(keyword)),
+      payload:
+        keyword !== null
+          ? state.feedItems.filter(containsSearchTerm(keyword))
+          : state.feedListItems,
     });
   };
 

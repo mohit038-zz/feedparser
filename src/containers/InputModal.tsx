@@ -1,5 +1,4 @@
-import axios from "axios";
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { X } from "react-feather";
 // import { useFeedMap } from "../contexts/FeedMapContext";
 import { useFeedStore } from "../contexts/FeedStoreContext";

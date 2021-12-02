@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { Book, X } from "react-feather";
 import { useFeedStore } from "../contexts/FeedStoreContext";
@@ -8,11 +8,6 @@ import { Folder } from "../utils/emuns";
 interface PublicationOptionProps {
   publicationLink: String;
   active: boolean;
-}
-
-function useForceUpdate() {
-  const [value, setValue] = useState(0); // integer state
-  return () => setValue((value) => value + 1); // update the state to force render
 }
 
 function url_domain(data: String) {
@@ -26,12 +21,10 @@ export const PublicationOption: React.FC<PublicationOptionProps> = ({
   active,
 }: PublicationOptionProps) => {
   const { dispatch } = useFeedStore();
-  const forceUpdate = useForceUpdate();
   const removeLink = () => {
     dispatch({ type: "setActiveFolder", payload: Folder.ALL });
     dispatch({ type: "setActiveCategory", payload: null });
     dispatch({ type: "removePublisher", payload: publicationLink });
-    forceUpdate();
   };
   const handleClick = () => {
     dispatch({ type: "setActiveFolder", payload: Folder.PUBLISHER });
