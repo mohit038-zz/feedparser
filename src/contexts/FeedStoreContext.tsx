@@ -14,12 +14,14 @@ export type FeedStoreAction =
   | { type: "addToRead"; payload: String }
   | { type: "addPublishersUrl"; payload: String }
   | { type: "addFeedItem"; payload: Array<feedItem> }
-  | { type: "removePublisher"; payload: String };
+  | { type: "removePublisher"; payload: String }
+  | { type: "addFeedListItems"; payload: Array<feedItem> };
 
 interface FeedStoreState {
   read: String[];
   favourites: String[];
   feedItems: feedItem[];
+  feedListItems: feedItem[];
   publishersUrl: String[];
   activePublisher: String | null;
   activeFolder: Folder;
@@ -34,8 +36,9 @@ interface FeedStoreContextInterface {
 let initialState = {
   state: {
     read: [],
-    favourites: [],
     feedItems: [],
+    favourites: [],
+    feedListItems: [],
     publishersUrl: [],
     activePublisher: "",
     activeCategory: null,
@@ -90,6 +93,11 @@ const feedStoreReducer = (
         };
       }
       return state;
+    case "addFeedListItems":
+      return {
+        ...state,
+        feedListItems: [...action.payload],
+      };
     case "addPublishersUrl":
       if (!state.publishersUrl.includes(action.payload)) {
         return {

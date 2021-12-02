@@ -22,8 +22,7 @@ function containsSearchTerm(keyword: string) {
 }
 
 const RssFeed: React.FC<RssFeedProps> = () => {
-  const { state } = useFeedStore();
-  const [feed, setFeed] = React.useState(state.feedItems);
+  const { state, dispatch } = useFeedStore();
 
   const refreshFeed = async () => {
     let res: Array<feedItem> = [];
@@ -37,32 +36,55 @@ const RssFeed: React.FC<RssFeedProps> = () => {
       }));
       res.push(...feedItems);
     }
-    setFeed(res);
+    dispatch({ type: "addFeedItem", payload: res });
   };
 
-  useInterval(refreshFeed, 10000);
+  useInterval(refreshFeed, 100000);
 
   useEffect(() => {
     if (state.activeFolder === Folder.UNREAD) {
-      setFeed(state.feedItems.filter((item) => !state.read.includes(item.id)));
+      dispatch({
+        type: "addFeedListItems",
+        payload: state.feedItems.filter(
+          (item) => !state.read.includes(item.id)
+        ),
+      });
+      console.log("unredt");
     } else if (state.activeFolder === Folder.FAVORITES) {
-      setFeed(
-        state.feedItems.filter((item) => state.favourites.includes(item.id))
-      );
+      dispatch({
+        type: "addFeedListItems",
+        payload: state.feedItems.filter((item) =>
+          state.favourites.includes(item.id)
+        ),
+      });
+      console.log("fav");
     } else if (state.activeFolder === Folder.PUBLISHER) {
-      state.feedItems.filter((item) => item.rssUrl === state.activePublisher);
+      dispatch({
+        type: "addFeedListItems",
+        payload: state.feedItems.filter(
+          (item) => item.rssUrl === state.activePublisher
+        ),
+      });
+      console.log("pub");
     } else if (state.activeFolder === Folder.CATEGORY) {
-      setFeed(
-        state.feedItems.filter((item) =>
+      dispatch({
+        type: "addFeedListItems",
+        payload: state.feedItems.filter((item) =>
           item.tags?.includes({
             term: state.activeCategory as string,
           })
-        )
-      );
+        ),
+      });
+      console.log("cat");
     } else {
-      setFeed(state.feedItems);
+      dispatch({ type: "addFeedListItems", payload: state.feedItems });
+      console.log("ALL");
     }
+    console.log("useEffect run");
+    console.log(state.activeFolder);
+    console.log(state.activeFolder === Folder.FAVORITES);
   }, [
+    dispatch,
     state.activeCategory,
     state.activeFolder,
     state.activePublisher,
@@ -71,10 +93,11 @@ const RssFeed: React.FC<RssFeedProps> = () => {
     state.read,
   ]);
 
-  useEffect(() => {});
-
   const onFilterChange = (keyword: string): void => {
-    setFeed(state.feedItems.filter(containsSearchTerm(keyword)));
+    dispatch({
+      type: "addFeedListItems",
+      payload: state.feedItems.filter(containsSearchTerm(keyword)),
+    });
   };
 
   return (
@@ -86,8 +109,8 @@ const RssFeed: React.FC<RssFeedProps> = () => {
         </button>
       </div>
       <div className="feedList-list">
-        {feed.length > 0 ? (
-          feed.map((feedItem) => (
+        {state.feedListItems.length > 0 ? (
+          state.feedListItems.map((feedItem) => (
             <ArticleCard key={feedItem.id} feedItem={feedItem} />
           ))
         ) : (
